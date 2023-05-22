@@ -5,12 +5,16 @@ import os
 import random
 import sys
 import time
-import urllib2
+#import urllib2                     #mck
+import urllib.request as urllib2    #mck
 import zipfile
 sys.path.append('../')
 
 import numpy as np
 import tensorflow as tf
+
+#import tensorflow.compat.v1 as tf   #mck
+#tf.disable_v2_behavior()            #mck
 
 from mnist_model import deep_mnist
 
@@ -121,16 +125,18 @@ def get_learning_rate(args, current, best, counter, learning_rate):
 
 def main(args):
    """The magic happens here"""
-   tf.reset_default_graph()
+   tf.compat.v1.reset_default_graph()     #mck
+   tf.compat.v1.disable_eager_execution() #mck - for placeholder()
+
    ##### SETUP AND LOAD DATA #####
    args, data = settings(args)
    
    ##### BUILD MODEL #####
    ## Placeholders
-   x = tf.placeholder(tf.float32, [args.batch_size,784], name='x')
-   y = tf.placeholder(tf.int64, [args.batch_size], name='y')
-   learning_rate = tf.placeholder(tf.float32, name='learning_rate')
-   train_phase = tf.placeholder(tf.bool, name='train_phase')
+   x = tf.compat.v1.placeholder(dtype=tf.float32, shape=[args.batch_size,784], name='x')
+   y = tf.compat.v1.placeholder(dtype=tf.int64, shape=[args.batch_size], name='y')
+   learning_rate = tf.compat.v1.placeholder(dtype=tf.float32, name='learning_rate')
+   train_phase = tf.compat.v1.placeholder(dtype=tf.bool, name='train_phase')
 
    # Construct model and optimizer
    pred = deep_mnist(args, x, train_phase)

@@ -96,7 +96,7 @@ def pklbatcher(inputs, targets, batch_size, shuffle=False, augment=False,
         # Data augmentation
         im = []
         targ = []
-        for i in xrange(len(excerpt)):
+        for i in range(len(excerpt)):
             img = inputs[excerpt[i]]['x']
             tg = targets[excerpt[i]]['y'] > 2
             if augment:
@@ -235,7 +235,7 @@ def main(args):
          for batch in generator:
             batch_x, batch_y, excerpt = batch
             output = sess.run(bsd_map, feed_dict={x: batch_x, train_phase: False})
-            for i in xrange(output.shape[0]):
+            for i in range(output.shape[0]):
                save_name = save_path + '/' + str(excerpt[i]).replace('.jpg','.png')
                im = output[i,:,:,0]
                im = (255*im).astype('uint8')
